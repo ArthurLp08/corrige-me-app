@@ -1,5 +1,3 @@
-"use client"
-
 import { ClipboardCheck, PenLine, Sparkles } from "lucide-react"
 
 import { FadeIn } from "@/components/landing/fade-in"

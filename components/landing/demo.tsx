@@ -1,5 +1,3 @@
-"use client"
-
 import { CheckCircle2, Lightbulb } from "lucide-react"
 
 import { FadeIn } from "@/components/landing/fade-in"

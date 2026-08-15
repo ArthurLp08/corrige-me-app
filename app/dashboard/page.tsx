@@ -38,13 +38,11 @@ export default async function DashboardPage() {
     redirect("/entrar")
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("display_name")
-    .eq("id", user.id)
-    .maybeSingle()
-
-  const data = await getDashboardData(user.id)
+  const [profileResult, data] = await Promise.all([
+    supabase.from("profiles").select("display_name").eq("id", user.id).maybeSingle(),
+    getDashboardData(user.id),
+  ])
+  const profile = profileResult.data
 
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6">

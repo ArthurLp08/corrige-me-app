@@ -5,8 +5,8 @@ import { redirect } from "next/navigation"
 
 import { EssayEditor } from "@/features/essays/essay-editor"
 import { UsageCard } from "@/features/dashboard/usage-card"
-import { getDashboardData } from "@/lib/dashboard"
 import { createClient } from "@/lib/supabase/server"
+import { getUsage } from "@/lib/usage/usage-store"
 import { Button } from "@/components/ui/button"
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export default async function NewEssayPage() {
     redirect("/entrar")
   }
 
-  const data = await getDashboardData(user.id)
+  const usage = await getUsage(user.id)
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-8 sm:px-6">
@@ -44,8 +44,8 @@ export default async function NewEssayPage() {
           </p>
         </div>
       </div>
-      <UsageCard used={data.usage.used} limit={data.usage.limit} resetsAt={data.usage.resetsAt} />
-      <EssayEditor usage={data.usage} />
+      <UsageCard used={usage.used} limit={usage.limit} resetsAt={usage.resetsAt} />
+      <EssayEditor usage={usage} />
     </main>
   )
 }

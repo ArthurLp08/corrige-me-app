@@ -444,18 +444,18 @@ Todas as páginas apresentam uma experiência consistente e sem estados quebrado
 
 Revisar:
 
-- [ ] Server Components
-- [ ] Client Components
-- [ ] Requests
-- [ ] API
-- [ ] Validação
-- [ ] Autenticação
-- [ ] RLS
-- [ ] Secrets
-- [ ] Rate limiting
-- [ ] Bundle
-- [ ] Imagens
-- [ ] Loading
+- [x] Server Components
+- [x] Client Components
+- [x] Requests
+- [x] API
+- [x] Validação
+- [x] Autenticação
+- [x] RLS
+- [x] Secrets
+- [x] Rate limiting
+- [x] Bundle
+- [x] Imagens
+- [x] Loading
 
 Corrigir problemas encontrados.
 

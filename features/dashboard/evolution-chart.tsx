@@ -1,5 +1,3 @@
-"use client"
-
 import type { ScorePoint } from "@/lib/dashboard"
 
 const WIDTH = 640
