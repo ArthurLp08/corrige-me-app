@@ -10,7 +10,8 @@
 - Leia a fase atual completamente antes de implementar.
 - Não implemente funcionalidades de fases futuras.
 - Antes de alterar código existente, entenda sua estrutura.
-- Ao finalizar uma fase, revise sua implementação.
+- Ao concluir uma tarefa, marque-a como `[x]` no `ROADMAP.md` imediatamente.
+- Ao concluir uma fase, revise sua implementação e marque todas as tarefas da fase.
 - Marque como concluído somente aquilo que realmente foi implementado.
 - Se uma decisão importante não estiver definida, pare e peça confirmação.
 - Ao finalizar uma fase, informe o que foi feito e indique a próxima fase.
@@ -25,16 +26,16 @@ Criar a base técnica do Corrige-Me.
 
 ## Tarefas
 
-- [ ] Criar/configurar projeto Next.js com TypeScript
-- [ ] Configurar Tailwind CSS
-- [ ] Configurar shadcn/ui
-- [ ] Configurar Framer Motion
-- [ ] Configurar ESLint
-- [ ] Configurar estrutura de pastas
-- [ ] Configurar aliases
-- [ ] Criar `.env.example`
-- [ ] Criar layout base
-- [ ] Garantir que o projeto execute corretamente
+- [x] Criar/configurar projeto Next.js com TypeScript
+- [x] Configurar Tailwind CSS
+- [x] Configurar shadcn/ui
+- [x] Configurar Framer Motion
+- [x] Configurar ESLint
+- [x] Configurar estrutura de pastas
+- [x] Configurar aliases
+- [x] Criar `.env.example`
+- [x] Criar layout base
+- [x] Garantir que o projeto execute corretamente
 
 ## Critério de conclusão
 
@@ -55,29 +56,29 @@ Todos os componentes devem seguir integralmente o Design System definido no `AGE
 
 ## Tarefas
 
-- [ ] Button
-- [ ] Input
-- [ ] Textarea
-- [ ] Card
-- [ ] Badge
-- [ ] Dialog
-- [ ] Dropdown
-- [ ] Toast
-- [ ] Skeleton
-- [ ] Progress
-- [ ] Tabs
-- [ ] Loading State
-- [ ] Empty State
-- [ ] Error State
+- [x] Button
+- [x] Input
+- [x] Textarea
+- [x] Card
+- [x] Badge
+- [x] Dialog
+- [x] Dropdown
+- [x] Toast
+- [x] Skeleton
+- [x] Progress
+- [x] Tabs
+- [x] Loading State
+- [x] Empty State
+- [x] Error State
 
 Para cada componente:
 
-- [ ] Implementar variantes necessárias
-- [ ] Implementar estados
-- [ ] Garantir responsividade
-- [ ] Garantir acessibilidade
-- [ ] Utilizar tokens do tema
-- [ ] Evitar estilos arbitrários
+- [x] Implementar variantes necessárias
+- [x] Implementar estados
+- [x] Garantir responsividade
+- [x] Garantir acessibilidade
+- [x] Utilizar tokens do tema
+- [x] Evitar estilos arbitrários
 
 ## Critério de conclusão
 
@@ -97,16 +98,16 @@ Apresentar o Corrige-Me para um visitante que ainda não conhece o produto.
 
 ## Tarefas
 
-- [ ] Navbar
-- [ ] Hero
-- [ ] Explicação de como funciona
-- [ ] Demonstração visual da correção
-- [ ] Benefícios
-- [ ] CTA
-- [ ] Footer
-- [ ] Responsividade
-- [ ] Microinterações
-- [ ] SEO básico
+- [x] Navbar
+- [x] Hero
+- [x] Explicação de como funciona
+- [x] Demonstração visual da correção
+- [x] Benefícios
+- [x] CTA
+- [x] Footer
+- [x] Responsividade
+- [x] Microinterações
+- [x] SEO básico
 
 A página deve comunicar:
 
