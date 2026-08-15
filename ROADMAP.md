@@ -278,16 +278,16 @@ Transformar o resultado da IA em uma experiência clara de aprendizado.
 
 ## Tarefas
 
-- [ ] Score principal
-- [ ] Cards das competências
-- [ ] Feedback por competência
-- [ ] Pontos fortes
-- [ ] Pontos de melhoria
-- [ ] Exemplos
-- [ ] Loading
-- [ ] Error states
-- [ ] Responsividade
-- [ ] Animações discretas
+- [x] Score principal
+- [x] Cards das competências
+- [x] Feedback por competência
+- [x] Pontos fortes
+- [x] Pontos de melhoria
+- [x] Exemplos
+- [x] Loading
+- [x] Error states
+- [x] Responsividade
+- [x] Animações discretas
 
 ## Critério de conclusão
 

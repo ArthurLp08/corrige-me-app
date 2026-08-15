@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { CorrectionResult } from "@/features/corrections/correction-result"
 import type { DashboardUsage } from "@/lib/dashboard"
 import { ESSAY_MAX_WORDS, ESSAY_MIN_WORDS, countWords, validateEssay } from "@/lib/essays/validation"
 import { submitEssay } from "@/lib/essays/submit"
@@ -114,28 +115,18 @@ export function EssayEditor({ usage }: EssayEditorProps) {
 
   if (state.success) {
     return (
-      <Card>
-        <CardContent className="flex flex-col items-center gap-1.5 py-16 text-center">
-          <div className="mb-3 flex size-12 items-center justify-center rounded-full bg-muted">
-            <CheckCircle2 className="size-5 text-success" />
-          </div>
-          <h3 className="font-heading text-base font-medium">Redação corrigida</h3>
-          {state.correction && (
-            <p className="mt-2 text-4xl font-semibold tracking-tight">
-              {state.correction.totalScore}
-              <span className="ml-1 text-lg font-normal text-muted-foreground">
-                / 1000
-              </span>
-            </p>
-          )}
-          <p className="max-w-sm text-sm text-muted-foreground">{state.success}</p>
-          <div className="mt-4">
-            <Button asChild>
-              <Link href="/dashboard">Voltar ao dashboard</Link>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-2 rounded-lg bg-success/10 px-3 py-2 text-sm text-success">
+          <CheckCircle2 className="size-4 shrink-0" />
+          {state.success}
+        </div>
+        {state.correction && <CorrectionResult correction={state.correction} />}
+        <div className="flex justify-center sm:justify-end">
+          <Button asChild>
+            <Link href="/dashboard">Voltar ao dashboard</Link>
+          </Button>
+        </div>
+      </div>
     )
   }
 
@@ -241,11 +232,13 @@ export function EssayEditor({ usage }: EssayEditorProps) {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground" aria-live="polite">
             <Save className="size-3.5 shrink-0" />
-            {saveState === "saving"
-              ? "Salvando rascunho..."
-              : saveState === "saved"
-                ? "Rascunho salvo neste dispositivo"
-                : "Seu rascunho é salvo automaticamente"}
+            {pending
+              ? "Isso pode levar alguns instantes"
+              : saveState === "saving"
+                ? "Salvando rascunho..."
+                : saveState === "saved"
+                  ? "Rascunho salvo neste dispositivo"
+                  : "Seu rascunho é salvo automaticamente"}
           </div>
           <Button
             type="button"
