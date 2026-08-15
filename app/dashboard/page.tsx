@@ -4,6 +4,9 @@ import { redirect } from "next/navigation"
 
 import { LogoutButton } from "@/components/auth/logout-button"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { CompetencyEvolution } from "@/features/dashboard/competency-evolution"
+import { EvolutionChart } from "@/features/dashboard/evolution-chart"
 import { RecentEssays } from "@/features/dashboard/recent-essays"
 import { ScoreMetrics } from "@/features/dashboard/score-metrics"
 import { UsageCard } from "@/features/dashboard/usage-card"
@@ -63,6 +66,21 @@ export default async function DashboardPage() {
         bestScore={data.bestScore}
         evolution={data.evolution}
       />
+
+      {data.evolutionPoints.length >= 2 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Evolução da nota</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <EvolutionChart points={data.evolutionPoints} />
+          </CardContent>
+        </Card>
+      )}
+
+      {data.competencyEvolution && (
+        <CompetencyEvolution items={data.competencyEvolution} />
+      )}
 
       <RecentEssays essays={data.essays} />
     </main>

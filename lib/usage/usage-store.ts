@@ -1,13 +1,7 @@
 import type { DashboardUsage } from "@/lib/dashboard"
+import { createClient } from "@/lib/supabase/server"
 
 export const MONTHLY_CORRECTION_LIMIT = 5
-
-type UsageRecord = {
-  month: string
-  used: number
-}
-
-const store = new Map<string, UsageRecord>()
 
 function currentMonthKey(): string {
   const now = new Date()
@@ -23,31 +17,43 @@ function nextMonthLabel(): string {
   })
 }
 
-export function getUsage(userId: string): DashboardUsage {
+export async function getUsage(userId: string): Promise<DashboardUsage> {
   const month = currentMonthKey()
-  const record = store.get(userId)
-  const used = record && record.month === month ? record.used : 0
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from("monthly_usage")
+    .select("used")
+    .eq("user_id", userId)
+    .eq("month", month)
+    .maybeSingle()
 
   return {
-    used,
+    used: data?.used ?? 0,
     limit: MONTHLY_CORRECTION_LIMIT,
     resetsAt: nextMonthLabel(),
   }
 }
 
-export function consumeCorrection(userId: string): boolean {
+export async function consumeCorrection(userId: string): Promise<void> {
   const month = currentMonthKey()
-  const record = store.get(userId)
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from("monthly_usage")
+    .select("used")
+    .eq("user_id", userId)
+    .eq("month", month)
+    .maybeSingle()
 
-  if (!record || record.month !== month) {
-    store.set(userId, { month, used: 1 })
-    return true
+  if (data) {
+    await supabase
+      .from("monthly_usage")
+      .update({ used: data.used + 1 })
+      .eq("user_id", userId)
+      .eq("month", month)
+    return
   }
 
-  if (record.used >= MONTHLY_CORRECTION_LIMIT) {
-    return false
-  }
-
-  record.used += 1
-  return true
+  await supabase
+    .from("monthly_usage")
+    .insert({ user_id: userId, month, used: 1 })
 }

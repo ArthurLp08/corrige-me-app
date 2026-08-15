@@ -36,7 +36,7 @@ export default async function CorrectionPage({
     redirect("/entrar")
   }
 
-  const correction = getCorrection(user.id, id)
+  const correction = await getCorrection(user.id, id)
 
   if (!correction) {
     notFound()

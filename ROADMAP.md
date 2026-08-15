@@ -328,12 +328,12 @@ Mostrar a evolução do estudante.
 
 ## Tarefas
 
-- [ ] Gráfico de evolução da nota
-- [ ] Média
-- [ ] Melhor nota
-- [ ] Evolução por competência
-- [ ] Comparação entre correções
-- [ ] Responsividade
+- [x] Gráfico de evolução da nota
+- [x] Média
+- [x] Melhor nota
+- [x] Evolução por competência
+- [x] Comparação entre correções
+- [x] Responsividade
 
 Priorizar visualizações simples e fáceis de interpretar.
 

@@ -47,7 +47,7 @@ export async function submitEssay(
     return { error: "Sua sessão expirou. Faça login novamente." }
   }
 
-  const usage = getUsage(user.id)
+  const usage = await getUsage(user.id)
   if (usage.used >= usage.limit) {
     return {
       error: `Você usou todas as ${usage.limit} correções deste mês. Seu limite renova em ${usage.resetsAt}.`,
@@ -59,10 +59,12 @@ export async function submitEssay(
     return { error: result.error }
   }
 
-  consumeCorrection(user.id)
+  await consumeCorrection(user.id)
 
-  const correctionId = saveCorrection(user.id, {
+  const correctionId = await saveCorrection(user.id, {
     theme,
+    text,
+    wordCount,
     result: result.data,
   })
 

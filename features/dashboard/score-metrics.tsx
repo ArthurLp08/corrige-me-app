@@ -47,7 +47,7 @@ export function ScoreMetrics({
             </span>
           )
         }
-        description="Variação desde a última correção"
+        description="Da primeira para a última correção"
       />
     </div>
   )
