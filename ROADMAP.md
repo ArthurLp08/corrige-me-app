@@ -85,6 +85,7 @@ Para cada componente:
 - Componentes são reutilizáveis.
 - Estados principais estão implementados.
 - Não existem componentes duplicados.
+- Adicione uma pagina temporaria chamada "design-system", onde posso ver todos os componentes.
 
 ---
 
