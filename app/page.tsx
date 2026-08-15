@@ -26,6 +26,9 @@ export const metadata: Metadata = {
     description:
       "Nota estimada e feedback claro sobre as 5 competências do ENEM, com exemplos práticos para evoluir.",
     type: "website",
+    url: "/",
+    siteName: "Corrige-Me",
+    locale: "pt_BR",
   },
 }
 

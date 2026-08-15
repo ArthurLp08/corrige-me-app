@@ -14,12 +14,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"),
   title: {
     default: "Corrige-Me — Correção de redações do ENEM",
     template: "%s | Corrige-Me",
   },
   description:
     "Corrige sua redação do ENEM com inteligência artificial, receba a nota por competência e entenda como evoluir.",
+  openGraph: {
+    type: "website",
+    siteName: "Corrige-Me",
+    locale: "pt_BR",
+    title: "Corrige-Me — Correção de redações do ENEM",
+    description:
+      "Corrige sua redação do ENEM com inteligência artificial, receba a nota por competência e entenda como evoluir.",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
   icons: {
     icon: [
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
