@@ -29,7 +29,7 @@ export function Cta() {
               asChild
               className="bg-background text-foreground hover:bg-background/90"
             >
-              <a href="#comecar">
+              <a href="/cadastro">
                 Corrigir minha primeira redação
                 <ArrowRight />
               </a>

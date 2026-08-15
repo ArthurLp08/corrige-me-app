@@ -59,7 +59,7 @@ export function Hero() {
             className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
           >
             <Button size="lg" asChild>
-              <a href="#comecar">
+              <a href="/cadastro">
                 Corrigir minha redação
                 <ArrowRight />
               </a>
