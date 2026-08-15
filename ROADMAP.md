@@ -156,21 +156,21 @@ Criar a página principal do usuário.
 
 Exibir:
 
-- [ ] Saudação
-- [ ] Correções restantes
-- [ ] Última nota
-- [ ] Média
-- [ ] Melhor nota
-- [ ] Evolução
-- [ ] Últimas redações
-- [ ] CTA para nova redação
+- [x] Saudação
+- [x] Correções restantes
+- [x] Última nota
+- [x] Média
+- [x] Melhor nota
+- [x] Evolução
+- [x] Últimas redações
+- [x] CTA para nova redação
 
 Estados:
 
-- [ ] Usuário sem redações
-- [ ] Usuário com redações
-- [ ] Loading
-- [ ] Error
+- [x] Usuário sem redações
+- [x] Usuário com redações
+- [x] Loading
+- [x] Error
 
 ## Critério de conclusão
 

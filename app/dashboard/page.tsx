@@ -1,15 +1,28 @@
+import type { Metadata } from "next"
+import { Plus } from "lucide-react"
 import { redirect } from "next/navigation"
 
 import { LogoutButton } from "@/components/auth/logout-button"
-import { Badge } from "@/components/ui/badge"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { RecentEssays } from "@/features/dashboard/recent-essays"
+import { ScoreMetrics } from "@/features/dashboard/score-metrics"
+import { UsageCard } from "@/features/dashboard/usage-card"
+import { WelcomeHeader } from "@/features/dashboard/welcome-header"
+import { getDashboardData } from "@/lib/dashboard"
 import { createClient } from "@/lib/supabase/server"
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Acompanhe seu desempenho nas redações do Corrige-Me.",
+}
+
+function getDisplayName(email?: string | null): string {
+  if (!email) {
+    return "estudante"
+  }
+  const local = email.split("@")[0]
+  return local.charAt(0).toUpperCase() + local.slice(1)
+}
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -21,23 +34,37 @@ export default async function DashboardPage() {
     redirect("/entrar")
   }
 
+  const data = await getDashboardData()
+
   return (
-    <main className="flex flex-1 items-center justify-center px-4 py-12">
-      <Card className="w-full max-w-sm">
-        <CardHeader className="gap-2">
-          <Badge variant="secondary" className="w-fit">
-            Logado
-          </Badge>
-          <CardTitle>Bem-vindo ao Corrige-Me</CardTitle>
-          <CardDescription>
-            Sua conta está ativa com o email {user.email}. O dashboard completo
-            com suas correções chega na próxima fase.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <WelcomeHeader userName={getDisplayName(user.email)} />
+        <div className="flex items-center gap-2">
           <LogoutButton />
-        </CardContent>
-      </Card>
+          <Button asChild>
+            <a href="/redacao/nova">
+              <Plus />
+              Nova redação
+            </a>
+          </Button>
+        </div>
+      </div>
+
+      <UsageCard
+        used={data.usage.used}
+        limit={data.usage.limit}
+        resetsAt={data.usage.resetsAt}
+      />
+
+      <ScoreMetrics
+        lastScore={data.lastScore}
+        averageScore={data.averageScore}
+        bestScore={data.bestScore}
+        evolution={data.evolution}
+      />
+
+      <RecentEssays essays={data.essays} />
     </main>
   )
 }
