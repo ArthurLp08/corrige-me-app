@@ -492,14 +492,14 @@ O MVP funciona corretamente em produção.
 
 Criar/atualizar:
 
-- [ ] README
-- [ ] Screenshots
-- [ ] Tecnologias
-- [ ] Arquitetura
-- [ ] Como executar
-- [ ] Variáveis de ambiente
-- [ ] Decisões importantes
-- [ ] Limitações conhecidas
+- [x] README
+- [x] Screenshots
+- [x] Tecnologias
+- [x] Arquitetura
+- [x] Como executar
+- [x] Variáveis de ambiente
+- [x] Decisões importantes
+- [x] Limitações conhecidas
 
 ## Critério de conclusão
 
