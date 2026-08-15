@@ -121,7 +121,10 @@ export function EssayEditor({ usage }: EssayEditorProps) {
           {state.success}
         </div>
         {state.correction && <CorrectionResult correction={state.correction} />}
-        <div className="flex justify-center sm:justify-end">
+        <div className="flex flex-wrap justify-center gap-2 sm:justify-end">
+          <Button variant="outline" asChild>
+            <Link href="/historico">Ver histórico</Link>
+          </Button>
           <Button asChild>
             <Link href="/dashboard">Voltar ao dashboard</Link>
           </Button>

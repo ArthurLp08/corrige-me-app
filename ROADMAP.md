@@ -303,16 +303,16 @@ Permitir que o usuário consulte correções anteriores.
 
 ## Tarefas
 
-- [ ] Lista de redações
-- [ ] Data
-- [ ] Tema
-- [ ] Nota final
-- [ ] Notas por competência
-- [ ] Acesso à correção completa
-- [ ] Empty State
-- [ ] Loading
-- [ ] Error
-- [ ] Responsividade
+- [x] Lista de redações
+- [x] Data
+- [x] Tema
+- [x] Nota final
+- [x] Notas por competência
+- [x] Acesso à correção completa
+- [x] Empty State
+- [x] Loading
+- [x] Error
+- [x] Responsividade
 
 ## Critério de conclusão
 

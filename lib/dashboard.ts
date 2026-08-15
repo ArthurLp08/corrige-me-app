@@ -1,4 +1,6 @@
 import { getUsage } from "@/lib/usage/usage-store"
+import { listCorrections } from "@/lib/corrections/correction-store"
+import { formatDate } from "@/lib/format"
 
 export type DashboardUsage = {
   used: number
@@ -23,12 +25,19 @@ export type DashboardData = {
 }
 
 export async function getDashboardData(userId: string): Promise<DashboardData> {
+  const corrections = listCorrections(userId)
+
   return {
     usage: getUsage(userId),
     lastScore: null,
     averageScore: null,
     bestScore: null,
     evolution: null,
-    essays: [],
+    essays: corrections.slice(0, 3).map((correction) => ({
+      id: correction.id,
+      theme: correction.theme,
+      score: correction.result.totalScore,
+      correctedAt: formatDate(correction.correctedAt),
+    })),
   }
 }

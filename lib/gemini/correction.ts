@@ -184,45 +184,48 @@ function extractErrorMessage(payload: unknown): string {
   return error ? `O serviço de correção retornou um erro (${error}).` : "O serviço de correção retornou um erro. Tente novamente."
 }
 
-export async function correctEssay(
-  theme: string,
-  text: string
-): Promise<CorrectResult> {
-  if (!API_KEY) {
-    return { ok: false, error: "A correção ainda não foi configurada no servidor." }
-  }
+function stripCodeFences(text: string): string {
+  const trimmed = text.trim()
+  const fenced = trimmed.match(/^```(?:json)?\s*([\s\S]*?)```\s*$/)
+  return fenced ? fenced[1].trim() : trimmed
+}
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`
+function extractJson(text: string): string | null {
+  const cleaned = stripCodeFences(text)
 
-  let response: Response
   try {
-    response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-goog-api-key": API_KEY,
-      },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: buildPrompt(theme, text) }] }],
-        generationConfig: {
-          temperature: 0.5,
-          maxOutputTokens: 4096,
-          responseMimeType: "application/json",
-          responseSchema: CORRECTION_SCHEMA,
-        },
-      }),
-      signal: AbortSignal.timeout(90_000),
-    })
+    JSON.parse(cleaned)
+    return cleaned
   } catch {
-    return { ok: false, error: "Não foi possível falar com o serviço de correção. Tente novamente." }
+    // continua para a tentativa de extrair o objeto mais externo
   }
 
-  const payload: unknown = await response.json().catch(() => null)
+  const start = cleaned.indexOf("{")
+  if (start === -1) return null
 
-  if (!response.ok) {
-    return { ok: false, error: extractErrorMessage(payload) }
+  let depth = 0
+  for (let i = start; i < cleaned.length; i++) {
+    const char = cleaned[i]
+    if (char === "{") {
+      depth += 1
+    } else if (char === "}") {
+      depth -= 1
+      if (depth === 0) {
+        const candidate = cleaned.slice(start, i + 1)
+        try {
+          JSON.parse(candidate)
+          return candidate
+        } catch {
+          return null
+        }
+      }
+    }
   }
 
+  return null
+}
+
+function extractResponseText(payload: unknown): string | null {
   const candidates =
     payload && typeof payload === "object" && "candidates" in payload
       ? payload.candidates
@@ -232,27 +235,102 @@ export async function correctEssay(
     first && typeof first === "object" && "content" in first ? first.content : undefined
   const parts =
     content && typeof content === "object" && "parts" in content ? content.parts : undefined
-  const part = Array.isArray(parts) ? parts[0] : undefined
-  const rawText =
-    part && typeof part === "object" && "text" in part && typeof part.text === "string"
-      ? part.text
-      : null
 
-  if (!rawText || !rawText.trim()) {
-    return { ok: false, error: "O Gemini não retornou uma resposta válida." }
+  if (!Array.isArray(parts)) return null
+
+  let text = ""
+  for (const part of parts) {
+    if (typeof part !== "object" || part === null) continue
+    const record = part as Record<string, unknown>
+    if (record.thought === true) continue
+    if (typeof record.text !== "string") continue
+    text += record.text
   }
 
-  let parsed: unknown
+  return text || null
+}
+
+const RETRY_INSTRUCTION =
+  "\n\nIMPORTANTE: responda APENAS com o objeto JSON, sem texto adicional e sem blocos de código markdown."
+
+type RunResult =
+  | { ok: true; data: CorrectionResult }
+  | { ok: false; retryable: boolean; error: string }
+
+async function runCorrection(
+  theme: string,
+  text: string,
+  extraInstruction: string,
+  apiKey: string
+): Promise<RunResult> {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`
+
+  let response: Response
   try {
-    parsed = JSON.parse(rawText)
+    response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": apiKey,
+      },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: buildPrompt(theme, text) + extraInstruction }] }],
+        generationConfig: {
+          temperature: 0.5,
+          maxOutputTokens: 8192,
+          thinkingConfig: { thinkingLevel: "LOW" },
+          responseMimeType: "application/json",
+          responseSchema: CORRECTION_SCHEMA,
+        },
+      }),
+      signal: AbortSignal.timeout(90_000),
+    })
   } catch {
-    return { ok: false, error: "A resposta do Gemini não pôde ser interpretada. Tente novamente." }
+    return { ok: false, retryable: false, error: "Não foi possível falar com o serviço de correção. Tente novamente." }
   }
 
-  const correction = parseCorrection(parsed)
+  const payload: unknown = await response.json().catch(() => null)
+
+  if (!response.ok) {
+    return { ok: false, retryable: false, error: extractErrorMessage(payload) }
+  }
+
+  const rawText = extractResponseText(payload)
+  if (!rawText) {
+    return { ok: false, retryable: false, error: "O Gemini não retornou uma resposta válida." }
+  }
+
+  const json = extractJson(rawText)
+  const correction = json === null ? null : parseCorrection(JSON.parse(json))
+
   if (correction === null) {
-    return { ok: false, error: "A resposta do Gemini não seguiu o formato esperado. Tente novamente." }
+    return {
+      ok: false,
+      retryable: true,
+      error: "A resposta do Gemini não pôde ser interpretada. Tente novamente.",
+    }
   }
 
   return { ok: true, data: correction }
+}
+
+export async function correctEssay(
+  theme: string,
+  text: string
+): Promise<CorrectResult> {
+  if (!API_KEY) {
+    return { ok: false, error: "A correção ainda não foi configurada no servidor." }
+  }
+
+  let result = await runCorrection(theme, text, "", API_KEY)
+
+  if (!result.ok && result.retryable) {
+    result = await runCorrection(theme, text, RETRY_INSTRUCTION, API_KEY)
+  }
+
+  if (!result.ok) {
+    return { ok: false, error: result.error }
+  }
+
+  return { ok: true, data: result.data }
 }

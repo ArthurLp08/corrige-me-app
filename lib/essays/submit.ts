@@ -5,11 +5,13 @@ import type { CorrectionResult } from "@/lib/gemini/types"
 import { ESSAY_MAX_WORDS, ESSAY_MIN_WORDS, countWords } from "@/lib/essays/validation"
 import { createClient } from "@/lib/supabase/server"
 import { consumeCorrection, getUsage } from "@/lib/usage/usage-store"
+import { saveCorrection } from "@/lib/corrections/correction-store"
 
 export type SubmitState = {
   error?: string
   success?: string
   correction?: CorrectionResult
+  correctionId?: string
 }
 
 export async function submitEssay(
@@ -59,8 +61,14 @@ export async function submitEssay(
 
   consumeCorrection(user.id)
 
+  const correctionId = saveCorrection(user.id, {
+    theme,
+    result: result.data,
+  })
+
   return {
     success: "Sua redação foi corrigida com sucesso.",
     correction: result.data,
+    correctionId,
   }
 }
