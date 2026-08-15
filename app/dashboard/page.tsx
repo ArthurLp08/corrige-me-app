@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Plus } from "lucide-react"
+import { Plus, Settings } from "lucide-react"
 import { redirect } from "next/navigation"
 
 import { LogoutButton } from "@/components/auth/logout-button"
@@ -37,13 +37,26 @@ export default async function DashboardPage() {
     redirect("/entrar")
   }
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("display_name")
+    .eq("id", user.id)
+    .maybeSingle()
+
   const data = await getDashboardData(user.id)
 
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <WelcomeHeader userName={getDisplayName(user.email)} />
+        <WelcomeHeader
+          userName={profile?.display_name || getDisplayName(user.email)}
+        />
         <div className="flex items-center gap-2">
+          <Button asChild variant="outline" size="icon" aria-label="Configurações">
+            <a href="/configuracoes">
+              <Settings />
+            </a>
+          </Button>
           <LogoutButton />
           <Button asChild>
             <a href="/redacao/nova">

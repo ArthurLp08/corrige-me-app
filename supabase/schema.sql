@@ -13,6 +13,10 @@
     created_at timestamptz not null default now()
   );
 
+  -- Corrige bancos criados antes da coluna existir
+  alter table public.profiles
+    add column if not exists display_name text;
+
   alter table public.profiles enable row level security;
 
   drop policy if exists "profiles_select_own" on public.profiles;

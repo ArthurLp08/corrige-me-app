@@ -253,6 +253,14 @@ function extractResponseText(payload: unknown): string | null {
 const RETRY_INSTRUCTION =
   "\n\nIMPORTANTE: responda APENAS com o objeto JSON, sem texto adicional e sem blocos de código markdown."
 
+const RETRYABLE_STATUSES = new Set([429, 500, 502, 503, 504])
+const MAX_ATTEMPTS = 3
+const BASE_RETRY_DELAY_MS = 1500
+
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 type RunResult =
   | { ok: true; data: CorrectionResult }
   | { ok: false; retryable: boolean; error: string }
@@ -286,13 +294,24 @@ async function runCorrection(
       signal: AbortSignal.timeout(90_000),
     })
   } catch {
-    return { ok: false, retryable: false, error: "Não foi possível falar com o serviço de correção. Tente novamente." }
+    return {
+      ok: false,
+      retryable: true,
+      error: "Não foi possível falar com o serviço de correção. Tente novamente.",
+    }
   }
 
   const payload: unknown = await response.json().catch(() => null)
 
   if (!response.ok) {
-    return { ok: false, retryable: false, error: extractErrorMessage(payload) }
+    const retryable = RETRYABLE_STATUSES.has(response.status)
+    return {
+      ok: false,
+      retryable,
+      error: retryable
+        ? "O serviço de correção está com alta demanda no momento. Nenhuma correção foi consumida. Tente novamente em instantes."
+        : extractErrorMessage(payload),
+    }
   }
 
   const rawText = extractResponseText(payload)
@@ -322,15 +341,22 @@ export async function correctEssay(
     return { ok: false, error: "A correção ainda não foi configurada no servidor." }
   }
 
-  let result = await runCorrection(theme, text, "", API_KEY)
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    const extraInstruction = attempt > 1 ? RETRY_INSTRUCTION : ""
+    const result = await runCorrection(theme, text, extraInstruction, API_KEY)
 
-  if (!result.ok && result.retryable) {
-    result = await runCorrection(theme, text, RETRY_INSTRUCTION, API_KEY)
+    if (result.ok) {
+      return { ok: true, data: result.data }
+    }
+
+    if (!result.retryable || attempt === MAX_ATTEMPTS) {
+      return { ok: false, error: result.error }
+    }
+
+    const delayMs = BASE_RETRY_DELAY_MS * 2 ** (attempt - 1)
+    const jitter = Math.floor(Math.random() * 500)
+    await wait(delayMs + jitter)
   }
 
-  if (!result.ok) {
-    return { ok: false, error: result.error }
-  }
-
-  return { ok: true, data: result.data }
+  return { ok: false, error: "O serviço de correção retornou um erro. Tente novamente." }
 }

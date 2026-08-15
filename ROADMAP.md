@@ -353,18 +353,18 @@ Persistir os dados corretamente e proteger os recursos dos usuários.
 
 Criar/configurar:
 
-- [ ] Profiles
-- [ ] Essays
-- [ ] Corrections
-- [ ] Competencies
-- [ ] Monthly Usage
+- [x] Profiles
+- [x] Essays
+- [x] Corrections
+- [x] Competencies
+- [x] Monthly Usage
 
 Implementar:
 
-- [ ] RLS
-- [ ] Policies
-- [ ] Ownership
-- [ ] Validação server-side
+- [x] RLS
+- [x] Policies
+- [x] Ownership
+- [x] Validação server-side
 
 ## Critério de conclusão
 
@@ -380,10 +380,10 @@ Permitir gerenciamento básico da conta.
 
 ## Tarefas
 
-- [ ] Nome editável
-- [ ] Email somente leitura
-- [ ] Alteração de senha
-- [ ] Logout
+- [x] Nome editável
+- [x] Email somente leitura
+- [x] Alteração de senha
+- [x] Logout
 
 Não adicionar configurações desnecessárias ao MVP.
 

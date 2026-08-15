@@ -134,6 +134,75 @@ export async function signUp(
   }
 }
 
+function validateDisplayName(name: string): string | null {
+  if (!name.trim()) {
+    return "Informe seu nome."
+  }
+  if (name.trim().length > 60) {
+    return "O nome deve ter no máximo 60 caracteres."
+  }
+  return null
+}
+
+export async function updateProfileName(
+  _prevState: AuthState,
+  formData: FormData
+): Promise<AuthState> {
+  const name = String(formData.get("displayName") ?? "").trim()
+
+  const nameError = validateDisplayName(name)
+  if (nameError) {
+    return { error: nameError }
+  }
+
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { error: "Sua sessão expirou. Entre novamente." }
+  }
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ display_name: name })
+    .eq("id", user.id)
+
+  if (error) {
+    return { error: getAuthErrorMessage(error.message) }
+  }
+
+  revalidatePath("/configuracoes")
+  revalidatePath("/dashboard")
+  return { success: "Nome atualizado com sucesso." }
+}
+
+export async function updateAccountPassword(
+  _prevState: AuthState,
+  formData: FormData
+): Promise<AuthState> {
+  const password = String(formData.get("password") ?? "")
+  const confirmPassword = String(formData.get("confirmPassword") ?? "")
+
+  const passwordError = validateNewPassword(password)
+  if (passwordError) {
+    return { error: passwordError }
+  }
+  if (password !== confirmPassword) {
+    return { error: "As senhas não coincidem." }
+  }
+
+  const supabase = await createClient()
+  const { error } = await supabase.auth.updateUser({ password })
+
+  if (error) {
+    return { error: getAuthErrorMessage(error.message) }
+  }
+
+  return { success: "Senha atualizada com sucesso." }
+}
+
 export async function signOut() {
   const supabase = await createClient()
   await supabase.auth.signOut()
