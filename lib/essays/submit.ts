@@ -1,10 +1,15 @@
 "use server"
 
+import { correctEssay } from "@/lib/gemini/correction"
+import type { CorrectionResult } from "@/lib/gemini/types"
 import { ESSAY_MAX_WORDS, ESSAY_MIN_WORDS, countWords } from "@/lib/essays/validation"
+import { createClient } from "@/lib/supabase/server"
+import { consumeCorrection, getUsage } from "@/lib/usage/usage-store"
 
 export type SubmitState = {
   error?: string
   success?: string
+  correction?: CorrectionResult
 }
 
 export async function submitEssay(
@@ -31,5 +36,31 @@ export async function submitEssay(
     }
   }
 
-  return { success: "Sua redação foi enviada para o fluxo de correção." }
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { error: "Sua sessão expirou. Faça login novamente." }
+  }
+
+  const usage = getUsage(user.id)
+  if (usage.used >= usage.limit) {
+    return {
+      error: `Você usou todas as ${usage.limit} correções deste mês. Seu limite renova em ${usage.resetsAt}.`,
+    }
+  }
+
+  const result = await correctEssay(theme, text)
+  if (!result.ok) {
+    return { error: result.error }
+  }
+
+  consumeCorrection(user.id)
+
+  return {
+    success: "Sua redação foi corrigida com sucesso.",
+    correction: result.data,
+  }
 }

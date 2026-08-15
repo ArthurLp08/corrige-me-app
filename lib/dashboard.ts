@@ -1,3 +1,5 @@
+import { getUsage } from "@/lib/usage/usage-store"
+
 export type DashboardUsage = {
   used: number
   limit: number
@@ -20,22 +22,9 @@ export type DashboardData = {
   essays: RecentEssay[]
 }
 
-function getNextMonthLabel(): string {
-  const now = new Date()
-  const next = new Date(now.getFullYear(), now.getMonth() + 1, 1)
-  return next.toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-  })
-}
-
-export async function getDashboardData(): Promise<DashboardData> {
+export async function getDashboardData(userId: string): Promise<DashboardData> {
   return {
-    usage: {
-      used: 0,
-      limit: 5,
-      resetsAt: getNextMonthLabel(),
-    },
+    usage: getUsage(userId),
     lastScore: null,
     averageScore: null,
     bestScore: null,

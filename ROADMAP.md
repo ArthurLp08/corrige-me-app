@@ -228,32 +228,32 @@ Integrar o Gemini ao Corrige-Me.
 
 ## Tarefas
 
-- [ ] Criar endpoint/server action
-- [ ] Configurar Gemini
-- [ ] Criar prompt principal
-- [ ] Criar schema da resposta
-- [ ] Validar resposta
-- [ ] Tratar erros
-- [ ] Implementar loading
-- [ ] Implementar controle das 5 correções mensais
+- [x] Criar endpoint/server action
+- [x] Configurar Gemini
+- [x] Criar prompt principal
+- [x] Criar schema da resposta
+- [x] Validar resposta
+- [x] Tratar erros
+- [x] Implementar loading
+- [x] Implementar controle das 5 correções mensais
 
 A correção deve produzir:
 
-- [ ] Nota final
-- [ ] Nota das 5 competências
-- [ ] Feedback por competência
-- [ ] Pontos fortes
-- [ ] Pontos de melhoria
-- [ ] Explicação dos problemas
-- [ ] Exemplos de melhoria
-- [ ] Feedback geral
+- [x] Nota final
+- [x] Nota das 5 competências
+- [x] Feedback por competência
+- [x] Pontos fortes
+- [x] Pontos de melhoria
+- [x] Explicação dos problemas
+- [x] Exemplos de melhoria
+- [x] Feedback geral
 
 ## Segurança
 
-- [ ] API key somente no servidor
-- [ ] Nenhum secret em `NEXT_PUBLIC_*`
-- [ ] Validar redação antes do envio
-- [ ] Validar resposta da IA
+- [x] API key somente no servidor
+- [x] Nenhum secret em `NEXT_PUBLIC_*`
+- [x] Validar redação antes do envio
+- [x] Validar resposta da IA
 
 ## Critério de conclusão
 

@@ -115,17 +115,25 @@ export function EssayEditor({ usage }: EssayEditorProps) {
   if (state.success) {
     return (
       <Card>
-        <CardContent>
-          <EmptyState
-            icon={<CheckCircle2 className="size-5 text-success" />}
-            title="Redação enviada"
-            description={state.success}
-            action={
-              <Button asChild>
-                <Link href="/dashboard">Voltar ao dashboard</Link>
-              </Button>
-            }
-          />
+        <CardContent className="flex flex-col items-center gap-1.5 py-16 text-center">
+          <div className="mb-3 flex size-12 items-center justify-center rounded-full bg-muted">
+            <CheckCircle2 className="size-5 text-success" />
+          </div>
+          <h3 className="font-heading text-base font-medium">Redação corrigida</h3>
+          {state.correction && (
+            <p className="mt-2 text-4xl font-semibold tracking-tight">
+              {state.correction.totalScore}
+              <span className="ml-1 text-lg font-normal text-muted-foreground">
+                / 1000
+              </span>
+            </p>
+          )}
+          <p className="max-w-sm text-sm text-muted-foreground">{state.success}</p>
+          <div className="mt-4">
+            <Button asChild>
+              <Link href="/dashboard">Voltar ao dashboard</Link>
+            </Button>
+          </div>
         </CardContent>
       </Card>
     )
@@ -248,7 +256,7 @@ export function EssayEditor({ usage }: EssayEditorProps) {
             {pending ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
-                Enviando redação...
+                Analisando sua redação...
               </>
             ) : (
               <>

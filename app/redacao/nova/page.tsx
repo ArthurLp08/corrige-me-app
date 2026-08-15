@@ -24,7 +24,7 @@ export default async function NewEssayPage() {
     redirect("/entrar")
   }
 
-  const data = await getDashboardData()
+  const data = await getDashboardData(user.id)
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-8 sm:px-6">
