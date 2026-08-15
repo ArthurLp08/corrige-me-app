@@ -7,9 +7,10 @@ import { Hero } from "@/components/landing/hero"
 import { HowItWorks } from "@/components/landing/how-it-works"
 import { Footer } from "@/components/layout/footer"
 import { Navbar } from "@/components/layout/navbar"
+import { createClient } from "@/lib/supabase/server"
 
 export const metadata: Metadata = {
-  title: "Corrige sua redação do ENEM com IA",
+  title: "Corrija sua redação do ENEM com IA",
   description:
     "Escreva sua redação, receba uma nota estimada e feedback claro sobre as 5 competências do ENEM, com pontos fortes, pontos de melhoria e exemplos práticos.",
   keywords: [
@@ -28,10 +29,15 @@ export const metadata: Metadata = {
   },
 }
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
   return (
     <div className="flex flex-1 flex-col">
-      <Navbar />
+      <Navbar isAuthenticated={Boolean(user)} />
       <main className="flex-1">
         <Hero />
         <HowItWorks />

@@ -70,7 +70,7 @@ export function Demo() {
                   <Badge className="ml-auto">Boa evolução</Badge>
                 </div>
 
-                <Progress value={76} aria-label="760 de 1000 pontos" />
+                <Progress value={80} aria-label="800 de 1000 pontos" />
 
                 <div className="flex flex-col gap-2.5">
                   {competencyMocks.map((competency) => (

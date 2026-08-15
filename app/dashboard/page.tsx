@@ -3,6 +3,7 @@ import { Plus, Settings } from "lucide-react"
 import { redirect } from "next/navigation"
 
 import { LogoutButton } from "@/components/auth/logout-button"
+import { FadeIn } from "@/components/common/fade-in"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CompetencyEvolution } from "@/features/dashboard/competency-evolution"
@@ -67,35 +68,45 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <UsageCard
-        used={data.usage.used}
-        limit={data.usage.limit}
-        resetsAt={data.usage.resetsAt}
-      />
+      <FadeIn>
+        <UsageCard
+          used={data.usage.used}
+          limit={data.usage.limit}
+          resetsAt={data.usage.resetsAt}
+        />
+      </FadeIn>
 
-      <ScoreMetrics
-        lastScore={data.lastScore}
-        averageScore={data.averageScore}
-        bestScore={data.bestScore}
-        evolution={data.evolution}
-      />
+      <FadeIn delay={0.06}>
+        <ScoreMetrics
+          lastScore={data.lastScore}
+          averageScore={data.averageScore}
+          bestScore={data.bestScore}
+          evolution={data.evolution}
+        />
+      </FadeIn>
 
       {data.evolutionPoints.length >= 2 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Evolução da nota</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <EvolutionChart points={data.evolutionPoints} />
-          </CardContent>
-        </Card>
+        <FadeIn delay={0.12}>
+          <Card>
+            <CardHeader>
+              <CardTitle>Evolução da nota</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <EvolutionChart points={data.evolutionPoints} />
+            </CardContent>
+          </Card>
+        </FadeIn>
       )}
 
       {data.competencyEvolution && (
-        <CompetencyEvolution items={data.competencyEvolution} />
+        <FadeIn delay={0.18}>
+          <CompetencyEvolution items={data.competencyEvolution} />
+        </FadeIn>
       )}
 
-      <RecentEssays essays={data.essays} />
+      <FadeIn delay={0.24}>
+        <RecentEssays essays={data.essays} />
+      </FadeIn>
     </main>
   )
 }

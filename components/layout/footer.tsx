@@ -1,5 +1,6 @@
-import { PenLine } from "lucide-react"
 import Link from "next/link"
+
+import { BrandLogo } from "@/components/common/brand-logo"
 
 export function Footer() {
   const year = new Date().getFullYear()
@@ -10,11 +11,9 @@ export function Footer() {
         <div className="flex flex-col gap-2">
           <Link
             href="/"
-            className="flex items-center gap-2 font-heading text-base font-semibold tracking-tight"
+            className="flex w-fit items-center gap-2 rounded-lg font-heading text-base font-semibold tracking-tight focus-visible:ring-2 focus-visible:ring-ring/50"
           >
-            <span className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <PenLine className="size-4" />
-            </span>
+            <BrandLogo className="size-7 rounded-lg" />
             Corrige-Me
           </Link>
           <p className="max-w-sm text-sm text-muted-foreground">

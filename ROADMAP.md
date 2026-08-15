@@ -401,36 +401,36 @@ Polir todo o produto antes do deploy.
 
 ## UX
 
-- [ ] Revisar fluxos
-- [ ] Revisar feedback das ações
-- [ ] Revisar loading states
-- [ ] Revisar empty states
-- [ ] Revisar error states
-- [ ] Revisar confirmações
-- [ ] Revisar hierarquia
+- [x] Revisar fluxos
+- [x] Revisar feedback das ações
+- [x] Revisar loading states
+- [x] Revisar empty states
+- [x] Revisar error states
+- [x] Revisar confirmações
+- [x] Revisar hierarquia
 
 ## UI
 
-- [ ] Revisar espaçamentos
-- [ ] Revisar tipografia
-- [ ] Revisar alinhamento
-- [ ] Revisar consistência
-- [ ] Revisar responsividade
+- [x] Revisar espaçamentos
+- [x] Revisar tipografia
+- [x] Revisar alinhamento
+- [x] Revisar consistência
+- [x] Revisar responsividade
 
 ## Motion
 
-- [ ] Microinterações
-- [ ] Transições
-- [ ] Entrada de conteúdo
-- [ ] Feedback de ações
+- [x] Microinterações
+- [x] Transições
+- [x] Entrada de conteúdo
+- [x] Feedback de ações
 
 ## Acessibilidade
 
-- [ ] Navegação por teclado
-- [ ] Focus states
-- [ ] Labels
-- [ ] Contraste
-- [ ] Semântica
+- [x] Navegação por teclado
+- [x] Focus states
+- [x] Labels
+- [x] Contraste
+- [x] Semântica
 
 ## Critério de conclusão
 

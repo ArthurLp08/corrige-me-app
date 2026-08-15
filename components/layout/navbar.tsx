@@ -1,9 +1,10 @@
 "use client"
 
-import { Menu, PenLine, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 
+import { BrandLogo } from "@/components/common/brand-logo"
 import { Button } from "@/components/ui/button"
 
 const navLinks = [
@@ -12,7 +13,13 @@ const navLinks = [
   { href: "#beneficios", label: "Benefícios" },
 ]
 
-export function Navbar() {
+const focusRing = "rounded-md focus-visible:ring-2 focus-visible:ring-ring/50"
+
+type NavbarProps = {
+  isAuthenticated: boolean
+}
+
+export function Navbar({ isAuthenticated }: NavbarProps) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -22,12 +29,10 @@ export function Navbar() {
         aria-label="Navegação principal"
       >
         <Link
-          href="/"
-          className="flex items-center gap-2 font-heading text-base font-semibold tracking-tight"
+          href={isAuthenticated ? "/dashboard" : "/"}
+          className="flex items-center gap-2 rounded-lg font-heading text-base font-semibold tracking-tight focus-visible:ring-2 focus-visible:ring-ring/50"
         >
-          <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <PenLine className="size-4" />
-          </span>
+          <BrandLogo className="size-8 rounded-lg" />
           Corrige-Me
         </Link>
 
@@ -36,7 +41,7 @@ export function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className={`text-sm font-medium text-muted-foreground transition-colors hover:text-foreground ${focusRing}`}
             >
               {link.label}
             </a>
@@ -44,12 +49,25 @@ export function Navbar() {
         </div>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Button variant="ghost" asChild>
-            <Link href="/entrar">Entrar</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/cadastro">Começar agora</Link>
-          </Button>
+          {isAuthenticated ? (
+            <>
+              <Button variant="ghost" asChild>
+                <Link href="/dashboard">Dashboard</Link>
+              </Button>
+              <Button asChild>
+                <Link href="/redacao/nova">Nova redação</Link>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="ghost" asChild>
+                <Link href="/entrar">Entrar</Link>
+              </Button>
+              <Button asChild>
+                <Link href="/cadastro">Começar agora</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         <Button
@@ -72,22 +90,39 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className={`rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground ${focusRing}`}
               >
                 {link.label}
               </a>
             ))}
             <div className="mt-2 flex flex-col gap-2">
-              <Button variant="outline" asChild>
-                <Link href="/entrar" onClick={() => setOpen(false)}>
-                  Entrar
-                </Link>
-              </Button>
-              <Button asChild>
-                <Link href="/cadastro" onClick={() => setOpen(false)}>
-                  Começar agora
-                </Link>
-              </Button>
+              {isAuthenticated ? (
+                <>
+                  <Button variant="outline" asChild>
+                    <Link href="/dashboard" onClick={() => setOpen(false)}>
+                      Dashboard
+                    </Link>
+                  </Button>
+                  <Button asChild>
+                    <Link href="/redacao/nova" onClick={() => setOpen(false)}>
+                      Nova redação
+                    </Link>
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="outline" asChild>
+                    <Link href="/entrar" onClick={() => setOpen(false)}>
+                      Entrar
+                    </Link>
+                  </Button>
+                  <Button asChild>
+                    <Link href="/cadastro" onClick={() => setOpen(false)}>
+                      Começar agora
+                    </Link>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>

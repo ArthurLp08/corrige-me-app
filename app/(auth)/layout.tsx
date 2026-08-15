@@ -1,6 +1,7 @@
-import { PenLine } from "lucide-react"
 import Link from "next/link"
 import type { ReactNode } from "react"
+
+import { BrandLogo } from "@/components/common/brand-logo"
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
@@ -10,9 +11,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           href="/"
           className="flex items-center justify-center gap-2 font-heading text-lg font-semibold tracking-tight"
         >
-          <span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <PenLine className="size-5" />
-          </span>
+          <BrandLogo className="size-9 rounded-lg" />
           Corrige-Me
         </Link>
         {children}

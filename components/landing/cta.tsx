@@ -1,7 +1,8 @@
 "use client"
 
-import { ArrowRight, PenLine } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
+import { BrandLogo } from "@/components/common/brand-logo"
 import { FadeIn } from "@/components/landing/fade-in"
 import { Button } from "@/components/ui/button"
 
@@ -11,9 +12,7 @@ export function Cta() {
       <div className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 md:py-24">
         <FadeIn>
           <div className="flex flex-col items-center gap-6 rounded-xl bg-primary px-6 py-14 text-center text-primary-foreground sm:px-12">
-            <span className="flex size-12 items-center justify-center rounded-xl bg-primary-foreground/15">
-              <PenLine className="size-6" />
-            </span>
+            <BrandLogo className="size-12 rounded-xl" />
             <div className="flex flex-col items-center gap-3">
               <h2 className="max-w-xl font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
                 Pronto para evoluir na sua redação?
