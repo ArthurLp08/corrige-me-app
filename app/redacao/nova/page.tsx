@@ -1,8 +1,12 @@
 import type { Metadata } from "next"
-import { PenLine } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { redirect } from "next/navigation"
 
-import { EmptyState } from "@/components/common/empty-state"
+import { EssayEditor } from "@/features/essays/essay-editor"
+import { UsageCard } from "@/features/dashboard/usage-card"
+import { getDashboardData } from "@/lib/dashboard"
+import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
 
 export const metadata: Metadata = {
@@ -10,19 +14,38 @@ export const metadata: Metadata = {
   description: "Escreva e envie sua redação para correção.",
 }
 
-export default function NewEssayPage() {
+export default async function NewEssayPage() {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect("/entrar")
+  }
+
+  const data = await getDashboardData()
+
   return (
-    <main className="flex flex-1 items-center justify-center px-4 py-12">
-      <EmptyState
-        icon={<PenLine className="size-5 text-muted-foreground" />}
-        title="Editor em construção"
-        description="O editor de redação chega na próxima fase. Enquanto isso, explore o dashboard."
-        action={
-          <Button asChild>
-            <Link href="/dashboard">Voltar ao dashboard</Link>
-          </Button>
-        }
-      />
+    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-8 sm:px-6">
+      <div>
+        <Button asChild variant="ghost" size="sm" className="-ml-2 text-muted-foreground">
+          <Link href="/dashboard">
+            <ArrowLeft className="size-4" />
+            Voltar ao dashboard
+          </Link>
+        </Button>
+        <div className="mt-4 flex flex-col gap-1">
+          <h1 className="font-heading text-2xl font-semibold tracking-tight sm:text-3xl">
+            Nova redação
+          </h1>
+          <p className="text-muted-foreground">
+            Escreva sobre o tema e envie para correção.
+          </p>
+        </div>
+      </div>
+      <UsageCard used={data.usage.used} limit={data.usage.limit} resetsAt={data.usage.resetsAt} />
+      <EssayEditor usage={data.usage} />
     </main>
   )
 }

@@ -186,16 +186,16 @@ Criar o fluxo de escrita e envio.
 
 ## Tarefas
 
-- [ ] Seleção/entrada do tema
-- [ ] Editor de texto
-- [ ] Contagem de palavras
-- [ ] Validação
-- [ ] Autosave
-- [ ] Estado de edição
-- [ ] Botão de envio
-- [ ] Confirmação antes do envio
-- [ ] Loading
-- [ ] Controle visual do limite mensal
+- [x] Seleção/entrada do tema
+- [x] Editor de texto
+- [x] Contagem de palavras
+- [x] Validação
+- [x] Autosave
+- [x] Estado de edição
+- [x] Botão de envio
+- [x] Confirmação antes do envio
+- [x] Loading
+- [x] Controle visual do limite mensal
 
 O limite é de 5 correções por mês.
 
